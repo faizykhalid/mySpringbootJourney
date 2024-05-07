@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: ChatApp
+  datasource:
+    url: jdbc:postgresql://localhost:5432/chatapp
+    username: postgres
+    password: 1234
