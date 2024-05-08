@@ -5,3 +5,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/chatapp
     username: postgres
     password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: create

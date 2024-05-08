@@ -1,4 +1,4 @@
-package com.fasols.chatapp.controllers;
+package com.fasols.chatapp.controller;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
