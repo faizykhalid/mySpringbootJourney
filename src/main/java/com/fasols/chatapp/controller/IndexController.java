@@ -1,5 +1,6 @@
 package com.fasols.chatapp.controller;
 
+import com.fasols.chatapp.dto.response.UserResponseDTO;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
