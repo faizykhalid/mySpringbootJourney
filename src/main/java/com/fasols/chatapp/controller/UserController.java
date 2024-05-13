@@ -1,13 +1,11 @@
 package com.fasols.chatapp.controller;
 
+import com.fasols.chatapp.dto.request.UserRequestDTO;
 import com.fasols.chatapp.dto.response.UserResponseDTO;
 import com.fasols.chatapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,10 @@ public class UserController {
     @GetMapping("")
     public List<UserResponseDTO> getUser() {
         return this.userService.getAllUsers();
+    }
+
+    @PostMapping("")
+    public UserResponseDTO createUser(@RequestBody UserRequestDTO user) {
+        return this.userService.createUser(user);
     }
 }

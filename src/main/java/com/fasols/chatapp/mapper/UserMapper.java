@@ -1,5 +1,6 @@
 package com.fasols.chatapp.mapper;
 
+import com.fasols.chatapp.dto.request.UserRequestDTO;
 import com.fasols.chatapp.dto.response.UserResponseDTO;
 import com.fasols.chatapp.entity.User;
 import org.mapstruct.Mapper;
@@ -11,4 +12,5 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     UserResponseDTO userToUserResponseDTO(User user);
+    User userRequestdtoToUser(UserRequestDTO userRequest);
 }
