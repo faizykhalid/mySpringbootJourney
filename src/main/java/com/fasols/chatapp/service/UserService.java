@@ -7,6 +7,8 @@ import com.fasols.chatapp.entity.User;
 import com.fasols.chatapp.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,11 @@ public class UserService {
     public List<UserResponseDTO> getAllUsers() {
         return this.userRepo.findAll().stream()
                 .map(userMapper::userToUserResponseDTO).toList();
+    }
+
+    public Page<UserResponseDTO> getAllUsers(Pageable pageInfo) {
+        Page<User> paginatedUsers = this.userRepo.findAll(pageInfo);
+        return paginatedUsers.map(userMapper::userToUserResponseDTO);
     }
 
     public UserResponseDTO getUserById(String userId) {
