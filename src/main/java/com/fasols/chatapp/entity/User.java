@@ -1,22 +1,35 @@
 package com.fasols.chatapp.entity;
 
+import com.fasols.chatapp.enums.TokenType;
+import jakarta.persistence.*;
+import org.hibernate.annotations.Check;
 import org.hibernate.annotations.UuidGenerator;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.Data;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.Instant;
 
 @Entity
 @Data
-@Table(name = "users")
 public class User {
     @Id
-    @UuidGenerator
-    private String id;
+    private String username;
     private String name;
+    @Column(nullable = false)
     private String password;
     @Column(unique = true, nullable = false)
     private String email;
+    @Column(columnDefinition = "CHAR(1) CHECK (ENABLED IN ('Y','N') ) NOT NULL")
+    Character enabled;
+    private String token;
+    @Enumerated(EnumType.ORDINAL)
+    private TokenType tokenType;
+    private Instant tokenExpiry;
+    @CreatedDate
+    private Instant createdDate;
+    @LastModifiedDate
+    private Instant updateDate;
 }
