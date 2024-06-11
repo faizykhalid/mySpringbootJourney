@@ -1,8 +1,12 @@
 package com.fasols.chatapp.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
 import org.hibernate.annotations.UuidGenerator;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
 @Data
