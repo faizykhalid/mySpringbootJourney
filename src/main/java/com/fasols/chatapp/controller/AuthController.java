@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasols.chatapp.dto.request.LoginRequestDTO;
 import com.fasols.chatapp.dto.response.AuthResponseDTO;
 
+import java.time.Instant;
+
 @RestController
 @RequestMapping("auth")
 public class AuthController {
@@ -18,7 +20,7 @@ public class AuthController {
         JWTToken token = new JWTToken(request.getEmail(), request.getPassword());
         Long expiry = token.getDecodedJWT().getClaims().get("exp").asLong();
     	return new AuthResponseDTO(
-                request.getEmail(), token.getToken(), expiry
+                request.getEmail(), token.getToken(), Instant.ofEpochMilli(expiry).toString()
         );
     }
 }

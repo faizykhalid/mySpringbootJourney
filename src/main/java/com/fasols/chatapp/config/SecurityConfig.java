@@ -1,9 +1,11 @@
 package com.fasols.chatapp.config;
 
+import com.fasols.chatapp.security.JwtAuthenticationFilter;
 import com.fasols.chatapp.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -21,31 +24,33 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SecurityConfig {
 	
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	public SecurityConfig(CustomUserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
 	}
 
     @Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//	@Order(1)
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authManager, PasswordEncoder passwordEncoder) throws Exception {
 
-		RequestMatcher createUserRequest = (request) -> request
-				.getMethod().equalsIgnoreCase(RequestMethod.POST.name()) && request.getServletPath().equalsIgnoreCase("/users");
+		RequestMatcher signinRequest = (request) -> (request
+				.getMethod().equalsIgnoreCase(RequestMethod.POST.name()) && request.getServletPath().equalsIgnoreCase("/auth/signin"));
 
-        return http
-                .authorizeHttpRequests((authorize) -> authorize
-//						.requestMatchers(createUserRequest).permitAll()
-//						.anyRequest().fullyAuthenticated()
-						.anyRequest().permitAll()
+		http
+				 .csrf(AbstractHttpConfigurer::disable)
+				 .authorizeHttpRequests((authorize) -> authorize
+								 .requestMatchers(signinRequest).permitAll()
+								 .anyRequest().authenticated()
 				)
-				.csrf(AbstractHttpConfigurer::disable)
-                .build();
+				.addFilterBefore(new JwtAuthenticationFilter(userDetailsService, passwordEncoder, "/auth/signin"), UsernamePasswordAuthenticationFilter.class);
+
+         return http.build();
     }
 	
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
-		return authConfiguration.getAuthenticationManager();
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
 	}
     
     @Bean

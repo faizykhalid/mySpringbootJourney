@@ -9,6 +9,18 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class AuthResponseDTO implements Serializable {
 
+	public AuthResponseDTO(String em, String tok, String expiry) {
+		this.email = em;
+		this.token = tok;
+		this.readableExpiryTime = expiry;
+	}
+
+	public AuthResponseDTO(String em, String tok, Long expiry) {
+		this.email = em;
+		this.token = tok;
+		this.expiryTime = expiry;
+	}
+
 	@Serial
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
@@ -17,5 +29,6 @@ public class AuthResponseDTO implements Serializable {
 	private String email;
 	private String token;
 	private Long expiryTime;
+	private String readableExpiryTime;
 
 }

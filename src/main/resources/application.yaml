@@ -1,6 +1,12 @@
 spring:
   application:
     name: ChatApp
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+    livereload:
+      enabled: true
   datasource:
     url: jdbc:postgresql://localhost:5432/chatapp
     username: postgres

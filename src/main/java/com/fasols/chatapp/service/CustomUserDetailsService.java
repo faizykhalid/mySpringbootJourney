@@ -1,9 +1,6 @@
 package com.fasols.chatapp.service;
 
-import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
-
+import com.fasols.chatapp.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.fasols.chatapp.dao.UserRepository;
+import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -25,7 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<com.fasols.chatapp.entity.User> fetchedUser =  this.userRepo.findById(UUID.fromString(username));
+		Optional<com.fasols.chatapp.entity.User> fetchedUser = this.userRepo.findByEmail(username);
+//		Optional<com.fasols.chatapp.entity.User> fetchedUser =  this.userRepo.findById(UUID.fromString(username));
 		if (fetchedUser.isEmpty()) throw new UsernameNotFoundException("Invalid Username");
 		return new User(fetchedUser.get().getEmail(), fetchedUser.get().getPassword(), Collections.EMPTY_LIST);
 	}
