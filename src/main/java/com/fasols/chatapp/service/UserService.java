@@ -1,8 +1,10 @@
 package com.fasols.chatapp.service;
 
-import java.util.List;
-import java.util.UUID;
-
+import com.fasols.chatapp.dao.UserRepository;
+import com.fasols.chatapp.dto.request.UserRequestDTO;
+import com.fasols.chatapp.dto.response.UserResponseDTO;
+import com.fasols.chatapp.entity.User;
+import com.fasols.chatapp.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
@@ -10,11 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.fasols.chatapp.dao.UserRepository;
-import com.fasols.chatapp.dto.request.UserRequestDTO;
-import com.fasols.chatapp.dto.response.UserResponseDTO;
-import com.fasols.chatapp.entity.User;
-import com.fasols.chatapp.mapper.UserMapper;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -54,4 +53,10 @@ public class UserService {
                 this.userRepo.save(newUser)
         );
     }
+
+    public UserResponseDTO getUserByEmail(String email) {
+        return this.userRepo.findByEmail(email)
+                .map(userMapper::userToUserResponseDTO).orElse(null);
+    }
+
 }

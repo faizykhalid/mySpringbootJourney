@@ -33,7 +33,7 @@ public class JWTToken {
 	
 	public static String[] extractUserAndPassword(String token) throws JWTVerificationException {
 		String[] userAndPassword = new String[2];
-		DecodedJWT decodedJwt = JWT.require(Algorithm.HMAC256(SECRET)).build().verify(token);
+		DecodedJWT decodedJwt = getDecodedJWT(token, SECRET);
 		userAndPassword[0] = decodedJwt.getSubject();
 		userAndPassword[1] = decodedJwt.getClaim(PASSWORD_CLAIM).asString();
 		return userAndPassword;
