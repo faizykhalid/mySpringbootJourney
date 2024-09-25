@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -40,7 +41,7 @@ public class UserService {
     }
 
     public UserResponseDTO getUserById(String userId) {
-        return this.userRepo.findById(userId)
+        return this.userRepo.findById(UUID.fromString(userId))
                 .map(userMapper::userToUserResponseDTO).orElse(null);
     }
 
@@ -52,4 +53,10 @@ public class UserService {
                 this.userRepo.save(newUser)
         );
     }
+
+    public UserResponseDTO getUserByEmail(String email) {
+        return this.userRepo.findByEmail(email)
+                .map(userMapper::userToUserResponseDTO).orElse(null);
+    }
+
 }
