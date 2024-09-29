@@ -11,8 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -36,11 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        RequestMatcher signinRequest = (req) -> req
-                .getMethod().equalsIgnoreCase(RequestMethod.POST.name()) && req.getServletPath().equalsIgnoreCase("/auth/signin");
-        if (signinRequest.matches(request)) {
-            return true;
-        }
         for (AntPathRequestMatcher matcher : excludedMatchers) {
             if (matcher.matches(request)) {
                 return true;

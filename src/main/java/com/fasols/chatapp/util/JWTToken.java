@@ -9,9 +9,6 @@ import lombok.Getter;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 
 public class JWTToken {
@@ -31,7 +28,7 @@ public class JWTToken {
 	public JWTToken(String username, String password, long expiryTime) {
 		this.token = JWT.create().withSubject(username)
 				.withClaim(PASSWORD_CLAIM, password)
-				.withExpiresAt(Instant.ofEpochSecond(Instant.now().plus(Duration.ofMinutes(Math.max(DEFAULT_EXPIRATION_TIME, expiryTime))).toEpochMilli()))
+				.withExpiresAt(Instant.ofEpochSecond(Instant.now().plus(Duration.ofMinutes(Math.max(DEFAULT_EXPIRATION_TIME, expiryTime))).getEpochSecond()))
 				.sign(Algorithm.HMAC256(SECRET));
 	}
 	
