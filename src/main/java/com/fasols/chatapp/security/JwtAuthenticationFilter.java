@@ -14,6 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -59,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getTokenFromRequest(HttpServletRequest httpRequest) {
-        String authHeader = httpRequest.getHeader("Authorization");
+        String authHeader = Optional.ofNullable(httpRequest.getHeader("Authorization")).orElse("");
         if (authHeader.startsWith("Bearer ")){
             authHeader = authHeader.substring("Bearer ".length());
         }

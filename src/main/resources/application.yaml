@@ -14,3 +14,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  mail:
+      host: sandbox.smtp.mailtrap.io
+      port: 2525
+      username: 31fff8a546f228
+      password: b3aebdccd67bbc
+      properties:
+        mail:
+          smtp:
+            auth: false
+            starttls:
+              enable: false

@@ -20,7 +20,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
         ErrorResponse errorResponse = new ErrorResponse(
-                "Forbidden: " + accessDeniedException.getMessage(), HttpStatus.FORBIDDEN.value(), LocalDateTime.now()
+                "Forbidden: " + accessDeniedException.getMessage(), HttpStatus.FORBIDDEN.value(), LocalDateTime.now().toString()
         );
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

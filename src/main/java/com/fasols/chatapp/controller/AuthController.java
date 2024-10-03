@@ -39,6 +39,7 @@ public class AuthController {
         this.authService.resetPassword(request.getEmail());
         return ResponseEntity.ok(new GenericResponse<>("Success", "Reset Link has been emailed", null));
     }
+    
 
 
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
 @Service
 @Valid
@@ -24,10 +25,16 @@ public class AuthService {
 
     UserRepository authUserService;
     PasswordResetTokenRepository passResetTokenRepo;
+    EmailService emailService;
 
     @Autowired
     public void setAuthUserService(UserRepository authUserService) {
         this.authUserService = authUserService;
+    }
+
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
     }
 
     @Autowired
@@ -40,6 +47,14 @@ public class AuthService {
         if (user.isPresent()) {
             PasswordResetToken token = new PasswordResetToken(user.get().getId(),Instant.now().plusSeconds(Duration.ofMinutes(10).toSeconds()));
             this.passResetTokenRepo.save(token);
+            new Thread(()-> {
+                try {
+                    emailService.sendEmail(user.get().getEmail(),"Password Reset Request", "Hi,\n We received a password reset request here is the url below:\n\n\nRegards,");
+                } catch (Exception e) {
+                    this.passResetTokenRepo.delete(token);
+                    throw e;
+                }
+            }).start();
         } else {
             throw new UserNotFoundException("Invalid Email id");
         }
